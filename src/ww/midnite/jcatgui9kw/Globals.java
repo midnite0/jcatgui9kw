@@ -231,7 +231,7 @@ public class Globals {
 
 
 	public static URL getUrlCheckForUpdate() {
-		return Helper.getURL("https://raw.githubusercontent.com/midnite0/jcatgui9kw/master/jCatGUI_9kw/version");
+		return Helper.getURL("https://raw.githubusercontent.com/midnite0/jcatgui9kw/master/version");
 	}
 
 
