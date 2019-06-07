@@ -28,8 +28,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -1116,8 +1115,8 @@ public class Gui {
 				final int y = (int) (screenSize.getHeight() - frame.getHeight()) / 2;
 
 				final Point location = new Point(
-						/**/Globals.SET.getAsInt("main.x", x),
-						/**/Globals.SET.getAsInt("main.y", y));
+						/**/Globals.SET.get("main.x", x),
+						/**/Globals.SET.get("main.y", y));
 
 				final String gd = Globals.SET.get("main.gd", null);
 				if (gd != null) {
@@ -1143,13 +1142,13 @@ public class Gui {
 				/**/apiKey0);
 				apiKey.setToolTipText(apiKey0);
 				for (int i = 0; i < zooms.length; i++) {
-					zooms[i] = new ZoomWrapper(i, new Zoom(Globals.SET.getAsInt("zoom" + (i + 1), 100) / 100d));
+					zooms[i] = new ZoomWrapper(i, new Zoom(Globals.SET.get("zoom" + (i + 1), 100) / 100d));
 				}
 				userStatisticsPanel.setVisible(Globals.SET.getAsBoolean("showUserStatistics", true));
 				smooth.setSelected(Globals.SET.getAsBoolean("smooth", true));
 				positionX.setSelectedIndex(Globals.SET.getAsInt("position.x", 1, 0, positionX.getItemCount() - 1));
 				positionY.setSelectedIndex(Globals.SET.getAsInt("position.y", 0, 0, positionY.getItemCount() - 1));
-				final Time intervalTime = Time.valueOf(Globals.SET.getAsInt("pause", 0));
+				final Time intervalTime = Time.valueOf(Globals.SET.get("pause", 0));
 				interval.setSelectedItem(intervalTime);
 				if (intervalTime.getSeconds() == 0) {
 					speed.setSelected(Globals.SET.getAsBoolean("speed", false));
@@ -1412,15 +1411,15 @@ public class Gui {
 	}
 
 
-	public void setBalance(final Date time, final int balance0) {
+	public void setBalance(final LocalDateTime time, final int balance0) {
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
 			public void run() {
 				final String balanceInfo = String.format(
 						/**/I18n.get("balance.received"),
-						/**/new SimpleDateFormat("dd.MM.yyyy").format(time),
-						/**/new SimpleDateFormat("HH:mm:ss").format(time));
+						/**/time.format(Globals.DATE_FORMATTER),
+						/**/time.format(Globals.TIME_FORMATTER));
 
 				final String oldBalance = balance.getText();
 				final String newBalance = String.valueOf(balance0);

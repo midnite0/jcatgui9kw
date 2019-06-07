@@ -1,21 +1,21 @@
 package ww.midnite.jcatgui9kw.net.request;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 
 public abstract class Request {
 
-	private final Date createTime;
+	private final LocalDateTime createTime;
 	private final RequestFactory factory;
 
 
 	protected Request(final RequestFactory factory0) {
-		createTime = new Date();
+		createTime = LocalDateTime.now();
 		factory = factory0;
 	}
 
 
-	public Date getCreateTime() {
+	public LocalDateTime getCreateTime() {
 		return createTime;
 	}
 

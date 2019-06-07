@@ -1,6 +1,6 @@
 package ww.midnite.jcatgui9kw.net.response;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,13 +11,13 @@ import ww.midnite.util.model.Failure;
 
 public abstract class Response {
 
-	private final Date createTime;
+	private final LocalDateTime createTime;
 	private final HttpGetResponse response;
 	private final Failure error;
 
 
 	public Response(final HttpGetResponse response0) {
-		createTime = new Date();
+		createTime = LocalDateTime.now();
 		response = response0;
 
 		error = parseError(response);
@@ -44,7 +44,7 @@ public abstract class Response {
 	}
 
 
-	public Date getCreateTime() {
+	public LocalDateTime getCreateTime() {
 		return createTime;
 	}
 

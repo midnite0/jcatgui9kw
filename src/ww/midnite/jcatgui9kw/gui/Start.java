@@ -220,8 +220,8 @@ public class Start {
 			public void run() {
 				final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 				start.setLocation(
-						/**/Globals.SET.getAsInt("start.x", (int) (screenSize.getWidth() - start.getWidth()) / 2),
-						/**/Globals.SET.getAsInt("start.y", (int) (screenSize.getHeight() - start.getHeight()) / 2));
+						/**/Globals.SET.get("start.x", (int) (screenSize.getWidth() - start.getWidth()) / 2),
+						/**/Globals.SET.get("start.y", (int) (screenSize.getHeight() - start.getHeight()) / 2));
 
 				start.setVisible(true);
 

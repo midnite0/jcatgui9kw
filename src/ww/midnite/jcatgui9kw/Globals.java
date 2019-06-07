@@ -6,6 +6,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Formatter;
@@ -96,6 +97,12 @@ public class Globals {
 			log.warning(e.getMessage());
 		}
 	}
+
+	public static final DateTimeFormatter XML_DATE_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+	public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+	public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
 
 	public static final Cursor DEFAULT_CURSOR = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 

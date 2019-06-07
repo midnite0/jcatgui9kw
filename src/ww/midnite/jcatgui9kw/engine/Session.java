@@ -1,6 +1,6 @@
 package ww.midnite.jcatgui9kw.engine;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +21,7 @@ public class Session {
 	private long lastGetCaptchaResponseTime;
 	private long lastGetCaptchaOkResponseTime;
 	private long lastShowCaptchaResponseTime;
-	private final Queue<Date> failureQueue;
+	private final Queue<LocalDateTime> failureQueue;
 
 
 	public static Session getSession(final String namespace, final int credits) {
@@ -39,7 +39,7 @@ public class Session {
 
 	private Session(final int startCredits) {
 		this.startCredits = startCredits;
-		failureQueue = new Queue<Date>(3);
+		failureQueue = new Queue<LocalDateTime>(3);
 	}
 
 
@@ -143,7 +143,7 @@ public class Session {
 	}
 
 
-	public Queue<Date> getFailureDatesQueue() {
+	public Queue<LocalDateTime> getFailureDatesQueue() {
 		return failureQueue;
 	}
 

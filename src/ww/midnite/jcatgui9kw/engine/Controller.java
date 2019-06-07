@@ -3,8 +3,7 @@ package ww.midnite.jcatgui9kw.engine;
 import static ww.midnite.jcatgui9kw.Globals.log;
 
 import java.net.URL;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -815,11 +814,8 @@ public class Controller implements StartListener, GuiListener, ResponseListener 
 	private void versionCheck() {
 		if (updatecheck()) {
 
-			final Date lastCheckDate = Globals.SET.getAsDate("updatecheck.date", new Date(0));
-			final Calendar c = Calendar.getInstance();
-			c.add(Calendar.HOUR_OF_DAY, -2);
-
-			if (lastCheckDate.before(c.getTime())) {
+			final LocalDateTime lastCheckDate = Globals.SET.getAsLocalDateTime("updatecheck.date", LocalDateTime.now().minusMonths(1));
+			if (lastCheckDate.isBefore(LocalDateTime.now().minusHours(2))) {
 				versionCheck = factory.getVersionCheck();
 				versionCheck.request();
 			}
@@ -830,7 +826,7 @@ public class Controller implements StartListener, GuiListener, ResponseListener 
 	@Override
 	public void versionCheckResponse(final VersionCheckResponse response) {
 		if (!response.isError()) {
-			Globals.SET.set("updatecheck.date", new Date());
+			Globals.SET.set("updatecheck.date", LocalDateTime.now());
 			if (response.getVersion().greaterThan(Globals.VERSION)) {
 				gui.updateAvailable(response.getVersion());
 			}
@@ -855,16 +851,14 @@ public class Controller implements StartListener, GuiListener, ResponseListener 
 			return false;
 		}
 
-		final Queue<Date> queue = session.getFailureDatesQueue();
+		final Queue<LocalDateTime> queue = session.getFailureDatesQueue();
 		queue.add(response.getCreateTime());
 
 		if (!queue.full()) {
 			return true;
 		}
 
-		final Calendar latestErrorTime = Calendar.getInstance();
-		latestErrorTime.add(Calendar.MINUTE, -5);
-		if (queue.first().before(latestErrorTime.getTime())) {
+		if (queue.first().isBefore(LocalDateTime.now().minusMinutes(5))) {
 			return true;
 		}
 
