@@ -28,12 +28,10 @@ public class HttpGet {
 
 	public synchronized HttpGetResponse get(final long timeoutMillis, final int retries) {
 
-		int maxRetries = retries;
-
-		HttpGetResponse response = get(timeoutMillis);
-		while (maxRetries-- > 0 && response.getCode() != 200) {
+		final HttpGetResponse response = get(timeoutMillis);
+		if (response.getCode() != 200 && retries > 0) {
 			log.warning("Received a not proper HTTP response code (" + response.getCode() + "). Send the request again.");
-			response = get(timeoutMillis);
+			return get(timeoutMillis, retries - 1);
 		}
 
 		return response;

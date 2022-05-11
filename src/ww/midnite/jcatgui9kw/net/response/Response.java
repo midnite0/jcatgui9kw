@@ -26,7 +26,7 @@ public abstract class Response {
 	private static final Pattern KNOWN_ERROR_PATTERN = Pattern.compile("(\\d{4})\\s(.{1,64})");
 
 
-	public static Failure parseError(final HttpGetResponse response) {
+	private static Failure parseError(final HttpGetResponse response) {
 		if (response == null) {
 			return new Failure("NORESPONSE");
 		}

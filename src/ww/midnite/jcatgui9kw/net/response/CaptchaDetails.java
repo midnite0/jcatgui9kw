@@ -98,4 +98,11 @@ public class CaptchaDetails {
 		return type == CaptchaType.CONFIRM_TEXT || type == CaptchaType.CONFIRM_MOUSE;
 	}
 
+
+	@Override
+	public String toString() {
+		return "CaptchaDetails [id=" + id + ", type=" + type + ", textAnswer=" + textAnswer + ", mouseAnswer="
+				+ mouseAnswer + ", minLength=" + minLength + ", noSpace=" + noSpace + ", numeric=" + numeric + "]";
+	}
+
 }

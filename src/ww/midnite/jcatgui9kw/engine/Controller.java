@@ -580,7 +580,7 @@ public class Controller implements StartListener, GuiListener, ResponseListener 
 		}
 		showCaptcha = null;
 
-		if (response.isError()) {
+		if (response.isError() || response.getCaptcha() == null) {
 			log.warning("Show captcha <- error: " + response.getError());
 			if (isErrorAllowed(response)) {
 				if (response.isConnectionException()) {

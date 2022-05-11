@@ -77,6 +77,7 @@ public class Gui {
 
 	private final JPanel captchaPanel;
 	private final CaptchaLabel captchaLabel;
+	private final JLabel answerTitle;
 	private final JTextField answer;
 	private final JLabel confirmAnswerLabel;
 
@@ -186,6 +187,9 @@ public class Gui {
 
 		tabToFocusLabel = new JLabel(" ");
 		tabToFocusLabel.setFocusable(true);
+
+		answerTitle = new JLabel("", JLabel.CENTER);
+		answerTitle.setFont(answerTitle.getFont().deriveFont(Font.PLAIN, 10));
 
 		answer = new JTextField(16);
 		answer.setHorizontalAlignment(JTextField.CENTER);
@@ -375,11 +379,15 @@ public class Gui {
 		captchaPanel.add(zoomPanel, BorderLayout.NORTH);
 		captchaPanel.add(captchaLabelPanel, BorderLayout.CENTER);
 
-		final JPanel answerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 2));
-		answerPanel.add(tabToFocusLabel);
-		answerPanel.add(answer);
-		answerPanel.add(confirmAnswerLabel);
-		answerPanel.add(new JLabel(" "));
+		final JPanel answerFiledPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 2));
+		answerFiledPanel.add(tabToFocusLabel);
+		answerFiledPanel.add(answer);
+		answerFiledPanel.add(confirmAnswerLabel);
+		answerFiledPanel.add(new JLabel(" "));
+
+		final JPanel answerPanel = new JPanel(new BorderLayout());
+		answerPanel.add(answerTitle, BorderLayout.NORTH);
+		answerPanel.add(answerFiledPanel);
 
 		final JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		buttonsPanel.add(sendYes);
@@ -845,7 +853,7 @@ public class Gui {
 
 
 	private boolean isCtrlDown(final ActionEvent e) {
-		return (e.getModifiers() & InputEvent.CTRL_MASK) != 0;
+		return (e.getModifiers() & InputEvent.CTRL_DOWN_MASK) != 0;
 	}
 
 
@@ -929,13 +937,13 @@ public class Gui {
 		captchaLabel.setPreferredSize(newLabelSize);
 		captchaLabel.setIcon(icon);
 
+		captchaLabel.revalidate();
 		captchaLabel.repaint();
 		captchaLabel.doLayout();
-		captchaLabel.revalidate();
 
+		captchaPanel.revalidate();
 		captchaPanel.repaint();
 		captchaPanel.doLayout();
-		captchaPanel.revalidate();
 	}
 
 
@@ -952,9 +960,9 @@ public class Gui {
 		}
 
 		if (captchaDetails.getType() == CaptchaType.TEXT) {
-			if (captchaDetails.getMinLength() > 0 && answerStr.length() < captchaDetails.getMinLength() ||
-					captchaDetails.isNoSpace() && answerStr.contains(" ") ||
-					captchaDetails.isNumeric() && !answerStr.matches("[\\d\\s]+")) {
+			if (minLengthViolation(answerStr) ||
+					noSpaceViolation(answerStr) ||
+					numericViolation(answerStr)) {
 				answer.setBackground(new Color(255, 224, 202));
 				answer.requestFocusInWindow();
 				return;
@@ -964,6 +972,21 @@ public class Gui {
 		viewListener.guiAnswer(captchaDetails, answerStr, signOut);
 		answer.setBackground(new JTextField().getBackground());
 		answerAftercare();
+	}
+
+
+	private boolean minLengthViolation(final String answerStr) {
+		return captchaDetails.getMinLength() > 0 && answerStr.length() < captchaDetails.getMinLength();
+	}
+
+
+	private boolean noSpaceViolation(final String answerStr) {
+		return captchaDetails.isNoSpace() && answerStr.contains(" ");
+	}
+
+
+	private boolean numericViolation(final String answerStr) {
+		return captchaDetails.isNumeric() && !answerStr.matches("[\\d\\s]+");
 	}
 
 
@@ -1016,6 +1039,7 @@ public class Gui {
 		setCaptchaIcon(Icons.COOL);
 
 		captchaLabel.setCrossCoordinate(null);
+		answerTitle.setText(null);
 		answer.setText(null);
 		answer.setEnabled(false);
 		confirmAnswerLabel.setVisible(false);
@@ -1342,6 +1366,7 @@ public class Gui {
 
 					answer.setVisible(true);
 					answer.setEnabled(true);
+					answerTitle.setText(buildTitle(captchaDetails));
 					send.setVisible(true);
 					send.setEnabled(true);
 				}
@@ -1368,6 +1393,28 @@ public class Gui {
 				stop.setEnabled(true);
 			}
 		});
+	}
+
+
+	private static String buildTitle(final CaptchaDetails captchaDetails) {
+		final StringBuilder sb = new StringBuilder();
+		if (captchaDetails.getMinLength() > 1) {
+			sb.append("min.length: " + captchaDetails.getMinLength());
+		}
+		if (captchaDetails.isNumeric()) {
+			if (sb.length() > 0) {
+				sb.append(" / ");
+			}
+			sb.append("numbers only");
+		}
+		if (captchaDetails.isNoSpace()) {
+			if (sb.length() > 0) {
+				sb.append(" / ");
+			}
+			sb.append("no spaces");
+		}
+
+		return sb.toString();
 	}
 
 

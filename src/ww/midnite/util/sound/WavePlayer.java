@@ -1,6 +1,9 @@
 package ww.midnite.util.sound;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.sound.sampled.AudioSystem;
@@ -11,7 +14,7 @@ import javax.sound.sampled.LineListener;
 
 public class WavePlayer implements LineListener {
 
-	private final URL waveFileURL;
+	private final byte[] waveFileData;
 	private final ThreadPoolExecutor threadPool;
 	private Clip clip;
 
@@ -22,28 +25,49 @@ public class WavePlayer implements LineListener {
 
 
 	public WavePlayer(final URL waveFileURL, final ThreadPoolExecutor threadPool) {
-		this.waveFileURL = waveFileURL;
+		waveFileData = read(waveFileURL);
 		this.threadPool = threadPool;
 	}
 
 
-	public void play() {
-		if (threadPool != null) {
-			threadPool.execute(playback());
-		} else {
-			new Thread(playback()).start();
+	private byte[] read(final URL waveFileURL) {
+		try {
+			return Files.readAllBytes(new File(waveFileURL.toURI()).toPath());
+		} catch (final Exception e) {
+			return new byte[0];
 		}
 	}
 
 
-	private Runnable playback() {
-		return new Runnable() {
-
+	public synchronized void play() {
+		final Runnable playback = new Runnable() {
 			@Override
 			public void run() {
 				playFile();
 			}
 		};
+
+		if (threadPool != null) {
+			threadPool.execute(playback);
+		} else {
+			new Thread(playback).start();
+		}
+	}
+
+
+	public synchronized void stop() {
+		final Runnable stop = new Runnable() {
+			@Override
+			public void run() {
+				clip.drain();
+				clip.close();
+			}
+		};
+		if (threadPool != null) {
+			threadPool.execute(stop);
+		} else {
+			new Thread(stop).start();
+		}
 	}
 
 
@@ -52,26 +76,20 @@ public class WavePlayer implements LineListener {
 			clip = AudioSystem.getClip();
 			clip.addLineListener(this);
 
-			clip.open(AudioSystem.getAudioInputStream(waveFileURL));
+			clip.open(AudioSystem.getAudioInputStream(new ByteArrayInputStream(waveFileData)));
 			clip.start();
 
 		} catch (final Exception e) {
 			e.printStackTrace();
-			close();
+			stop();
 		}
-	}
-
-
-	private synchronized void close() {
-		clip.drain();
-		clip.close();
 	}
 
 
 	@Override
 	public void update(final LineEvent event) {
 		if (event.getType().equals(LineEvent.Type.STOP)) {
-			close();
+			stop();
 		}
 	}
 

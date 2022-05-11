@@ -98,6 +98,7 @@ public class Globals {
 		}
 	}
 
+
 	public static final DateTimeFormatter XML_DATE_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
 	public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -116,7 +117,7 @@ public class Globals {
 
 	public static final long HTTP_TIMEOUT = 30000;
 
-	public static final int HTTP_RETRIES = 2;
+	public static final int HTTP_RETRIES = 5;
 
 	public static final long MAX_HTTP_TIMEOUT_COUNT = 10;
 
@@ -237,11 +238,6 @@ public class Globals {
 	}
 
 
-	public static URL getUrlCheckForUpdate() {
-		return Helper.getURL("https://raw.githubusercontent.com/midnite0/jcatgui9kw/master/version");
-	}
-
-
 	public static URI getUriRegister() {
 		return Helper.getURI("http://www.9kw.eu/register_en_61.html");
 	}
@@ -257,13 +253,18 @@ public class Globals {
 	}
 
 
-	public static URI getUriHomeLink() {
-		return Helper.getURI("http://sites.google.com/site/jcatgui9kw/");
+	public static URI getUriIconsLink() {
+		return Helper.getURI("http://www.visualpharm.com/");
 	}
 
 
-	public static URI getUriIconsLink() {
-		return Helper.getURI("http://www.visualpharm.com/");
+	public static URL getUrlCheckForUpdate() {
+		return Helper.getURL("https://raw.githubusercontent.com/midnite0/jcatgui9kw/master/version");
+	}
+
+
+	public static URI getUriHomeLink() {
+		return Helper.getURI("https://github.com/midnite0/jcatgui9kw/releases");
 	}
 
 }
