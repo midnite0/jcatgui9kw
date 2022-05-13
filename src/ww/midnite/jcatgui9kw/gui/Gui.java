@@ -379,15 +379,15 @@ public class Gui {
 		captchaPanel.add(zoomPanel, BorderLayout.NORTH);
 		captchaPanel.add(captchaLabelPanel, BorderLayout.CENTER);
 
-		final JPanel answerFiledPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 2));
-		answerFiledPanel.add(tabToFocusLabel);
-		answerFiledPanel.add(answer);
-		answerFiledPanel.add(confirmAnswerLabel);
-		answerFiledPanel.add(new JLabel(" "));
+		final JPanel answerFieldPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 2));
+		answerFieldPanel.add(tabToFocusLabel);
+		answerFieldPanel.add(answer);
+		answerFieldPanel.add(confirmAnswerLabel);
+		answerFieldPanel.add(new JLabel(" "));
 
 		final JPanel answerPanel = new JPanel(new BorderLayout());
 		answerPanel.add(answerTitle, BorderLayout.NORTH);
-		answerPanel.add(answerFiledPanel);
+		answerPanel.add(answerFieldPanel);
 
 		final JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		buttonsPanel.add(sendYes);
