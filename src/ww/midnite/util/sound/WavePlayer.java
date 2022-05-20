@@ -1,9 +1,6 @@
 package ww.midnite.util.sound;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.net.URL;
-import java.nio.file.Files;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.sound.sampled.AudioSystem;
@@ -19,23 +16,9 @@ public class WavePlayer implements LineListener {
 	private Clip clip;
 
 
-	public WavePlayer(final URL waveFile) {
-		this(waveFile, null);
-	}
-
-
-	public WavePlayer(final URL waveFileURL, final ThreadPoolExecutor threadPool) {
-		waveFileData = read(waveFileURL);
+	public WavePlayer(final byte[] waveFileData, final ThreadPoolExecutor threadPool) {
+		this.waveFileData = waveFileData;
 		this.threadPool = threadPool;
-	}
-
-
-	private byte[] read(final URL waveFileURL) {
-		try {
-			return Files.readAllBytes(new File(waveFileURL.toURI()).toPath());
-		} catch (final Exception e) {
-			return new byte[0];
-		}
 	}
 
 

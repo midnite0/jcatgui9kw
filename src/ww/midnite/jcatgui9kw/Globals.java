@@ -151,11 +151,9 @@ public class Globals {
 		}
 	}
 
-	public static final URL FILE_NOTIFY_URL = Globals.class.getResource("/resources/notify.wav");
+	public static final String FILE_NOTIFY_OWN = "notify.wav";
 
-	public static final File FILE_NOTIFY_OWN = new File(".", "notify.wav");
-
-	public static final URL FILE_NOTIFY_OWN_URL = Helper.getURL(FILE_NOTIFY_OWN.toURI());
+	public static final String FILE_NOTIFY_INTERNAL = "/resources/notify.wav";
 
 
 	public static boolean isHttps() {

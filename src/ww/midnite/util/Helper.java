@@ -41,17 +41,6 @@ public class Helper {
 	}
 
 
-	public static URL getURL(final URI uri) {
-		try {
-			return uri.toURL();
-		} catch (final Exception e) {
-			/* NoOp */
-		}
-
-		return null;
-	}
-
-
 	public static URL getURL(final String str) {
 
 		try {

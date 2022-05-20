@@ -2,7 +2,6 @@ package ww.midnite.jcatgui9kw.engine;
 
 import static ww.midnite.jcatgui9kw.Globals.log;
 
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -38,6 +37,7 @@ import ww.midnite.jcatgui9kw.net.response.ShowCaptchaResponse;
 import ww.midnite.jcatgui9kw.net.response.UnratedCaptchasResponse;
 import ww.midnite.jcatgui9kw.net.response.VersionCheckResponse;
 import ww.midnite.util.TimeoutTask;
+import ww.midnite.util.file.FileContentReader;
 import ww.midnite.util.i18n.I18n;
 import ww.midnite.util.model.Failure;
 import ww.midnite.util.model.Queue;
@@ -64,7 +64,8 @@ public class Controller implements StartListener, GuiListener, ResponseListener 
 	private boolean running;
 	private Session session;
 
-	public static enum AfterCommand {
+
+	public enum AfterCommand {
 		NEXT_CAPTCHA, SLEEP, SIGN_OUT, SHUTDOWN, QUIET;
 	}
 
@@ -80,13 +81,8 @@ public class Controller implements StartListener, GuiListener, ResponseListener 
 
 		timer = new Timer("Main Timer");
 
-		final URL waveFile;
-		if (Globals.FILE_NOTIFY_OWN.exists() && Globals.FILE_NOTIFY_OWN.canRead()) {
-			waveFile = Globals.FILE_NOTIFY_OWN_URL;
-		} else {
-			waveFile = Globals.FILE_NOTIFY_URL;
-		}
-		player = new WavePlayer(waveFile, threadPool);
+		final byte[] waveFileContent = FileContentReader.readBytes(Globals.FILE_NOTIFY_OWN, Globals.FILE_NOTIFY_INTERNAL);
+		player = new WavePlayer(waveFileContent, threadPool);
 	}
 
 

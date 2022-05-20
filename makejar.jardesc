@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jardesc>
+    <jar path="jCatGUI_9kw/JCatGUI_9kw.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/jCatGUI_9kw/makejar.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" mainClassHandleIdentifier="=jCatGUI_9kw/src&lt;{jCatGUI_9kw.java[jCatGUI_9kw" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="true">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=jCatGUI_9kw/src"/>
+        <javaElement handleIdentifier="=jCatGUI_9kw/res"/>
+    </selectedElements>
+</jardesc>
